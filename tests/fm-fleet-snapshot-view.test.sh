@@ -150,6 +150,27 @@ test_empty_fleet_json() {
   assert_contains "$view" "No live task metadata found." "empty fleet view should say no live metadata"
   pass "empty fleet snapshot and view use explicit absence markers"
 }
+test_contribution_input_scales_without_argv_overflow() {
+  local home out payload id n
+  home=$(make_home contribution-scale)
+  payload=$(printf '%*s' 50000 '') || fail "could not allocate contribution URL payload"
+  payload=${payload// /x}
+  for n in $(seq 1 64); do
+    id=$(printf 'scale-task-%03d' "$n")
+    fm_write_meta "$home/state/$id.meta" \
+      "kind=ship" \
+      "mode=no-mistakes" \
+      "pr=https://example.invalid/$id/$payload"
+  done
+  out=$(FM_HOME="$home" "$SNAPSHOT" --contribution-input) \
+    || fail "large contribution input should not fail from argument size"
+  printf '%s' "$out" | jq -e '
+    (.tasks | length) == 64
+      and ([.tasks[].pr.url | length] | max) > 50000
+  ' >/dev/null || fail "large contribution input was incomplete or malformed"
+  pass "contribution input carries a fleet well beyond the argument limit"
+}
+
 
 test_fixture_snapshot_json() {
   local home fakebin out ids
@@ -1170,3 +1191,4 @@ test_scout_reports_include_teardown_reports
 test_backlog_tasks_axi_forms_and_overrides
 test_view_renders_snapshot
 test_view_renders_dead_secondmate_agent_status
+test_contribution_input_scales_without_argv_overflow
