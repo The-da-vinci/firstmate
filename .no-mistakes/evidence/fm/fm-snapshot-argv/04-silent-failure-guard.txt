@@ -1,0 +1,27 @@
+# Adversarial: the intent's harm is a failing step that still exits 0 with empty output.
+# Fault injection - a jq shim that fails (exit 5) only on the contribution-input assembly,
+# standing in for an allocation failure or a full filesystem on that step.
+
+pre-fix  dee119b  fm-fleet-snapshot.sh --contribution-input
+    exit status : 0
+    stdout bytes: 0
+    stderr      : 
+post-fix 1dd0e33  fm-fleet-snapshot.sh --contribution-input
+    exit status : 1
+    stdout bytes: 0
+    stderr      : fm-fleet-snapshot: contribution input assembly failed 
+
+# The downstream consumer under the same fault (fm-contributions.sh poll calls the snapshot):
+pre-fix  dee119b  fm-contributions.sh poll
+    exit status : 0
+    stderr      : 
+post-fix 1dd0e33  fm-contributions.sh poll
+    exit status : 1
+    stderr      : fm-fleet-snapshot: contribution input assembly failed 
+
+# The new temp transport directory is cleaned up on both the success and the failure path:
+    leftover entries in TMPDIR after 5 successful + 1 failed run: 0
+
+# Unwritable TMPDIR (boundary introduced by file transport): refuses loudly, never empty-and-0.
+pre-fix  dee119b  --contribution-input  exit=0 stdout=9990 bytes  stderr=
+post-fix 1dd0e33  --contribution-input  exit=1 stdout=0 bytes  stderr=/ro-tmp/fm-fleet-snapshot.XXXXXX’: Permission denied fm-fleet-snapshot: temporary transport directory creation failed 

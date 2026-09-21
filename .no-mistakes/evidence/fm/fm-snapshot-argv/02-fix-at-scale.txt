@@ -1,0 +1,18 @@
+# Proof at a fleet far beyond the reported 28 tasks (post-fix 1dd0e33)
+# Fixture: 150 live ship tasks, 2000-row backlog (584,928 bytes of data/backlog.md).
+
+$ FM_HOME=$HOME150 fixed/bin/fm-fleet-snapshot.sh --contribution-input
+exit status: 0
+stderr: 
+stdout bytes: 3119923
+tasks=150  backlog.records=2000  every task carries pr.url: 150
+
+$ FM_HOME=$HOME150 base/bin/fm-fleet-snapshot.sh --contribution-input   # control
+exit status: 0
+stderr: /tmp/fm-argv-lab/base/bin/fm-fleet-snapshot.sh: line 1991: /usr/bin/jq: Argument list too long
+stdout bytes: 0
+
+# The whole supervisor surface at 150 tasks (post-fix):
+$ FM_HOME=$HOME150 fixed/bin/fm-fleet-snapshot.sh --json
+exit status: 0
+tasks=150  backlog=2000  contributions.known=150

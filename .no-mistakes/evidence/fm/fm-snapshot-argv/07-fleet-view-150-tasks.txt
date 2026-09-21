@@ -1,0 +1,30 @@
+# The end-user surface: bin/fm-fleet-view.sh rendering a 150-task fleet post-fix.
+# 2019 lines total; head and the backlog sections excerpted. Byte-identical to the pre-fix render.
+
+# Fleet View
+
+Schema: fm-fleet-snapshot.v1
+Home: /tmp/fm-argv-lab/home-150
+
+## Under Way
+| ID | Current | Kind | Repo/Project | Backend | Endpoint | Artifact | Path | Watch / return channel |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| fleet-task-001 | unknown / none | ship | alpha | tmux | present | https://github.com/kunchenguid/firstmate/pull/5001 | /tmp/fm-argv-lab/home-150/projects/alpha-worktree (absent) | bin/fm-peek.sh fm-fleet-task-001 |
+| fleet-task-002 | unknown / none | ship | alpha | tmux | present | https://github.com/kunchenguid/firstmate/pull/5002 | /tmp/fm-argv-lab/home-150/projects/alpha-worktree (absent) | bin/fm-peek.sh fm-fleet-task-002 |
+| fleet-task-003 | unknown / none | ship | alpha | tmux | present | https://github.com/kunchenguid/firstmate/pull/5003 | /tmp/fm-argv-lab/home-150/projects/alpha-worktree (absent) | bin/fm-peek.sh fm-fleet-task-003 |
+| fleet-task-004 | unknown / none | ship | alpha | tmux | present | https://github.com/kunchenguid/firstmate/pull/5004 | /tmp/fm-argv-lab/home-150/projects/alpha-worktree (absent) | bin/fm-peek.sh fm-fleet-task-004 |
+| fleet-task-005 | unknown / none | ship | alpha | tmux | present | https://github.com/kunchenguid/firstmate/pull/5005 | /tmp/fm-argv-lab/home-150/projects/alpha-worktree (absent) | bin/fm-peek.sh fm-fleet-task-005 |
+| fleet-task-006 | unknown / none | ship | alpha | tmux | present | https://github.com/kunchenguid/firstmate/pull/5006 | /tmp/fm-argv-lab/home-150/projects/alpha-worktree (absent) | bin/fm-peek.sh fm-fleet-task-006 |
+   ... 148 more task rows ...
+6: ## Under Way
+160: ## Queued
+1014: ## Done
+2018: ## Secondmates
+
+# Tail of the render:
+| fleet-task-1998 | Carry the backlog row body that the supervisor reads when it decides what task 1998 is waiting on, with the same clause density the operator file has | alpha | ship | - | - |
+| fleet-task-1999 | Carry the backlog row body that the supervisor reads when it decides what task 1999 is waiting on, with the same clause density the operator file has | alpha | ship | - | - |
+| fleet-task-2000 | Carry the backlog row body that the supervisor reads when it decides what task 2000 is waiting on, with the same clause density the operator file has | alpha | ship | - | - |
+
+## Secondmates
+For kind=secondmate, bearings selects validated structured state from that registered home; parent events and bounded terminal evidence are fallback-only supplements and never current-state authority.

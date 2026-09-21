@@ -1,0 +1,12 @@
+# Transport-only: identical output before and after, same FM_HOME, pinned clock and FM_ROOT.
+
+IDENTICAL  home-small  --contribution-input            9991 bytes  sha256=4449871725354979
+IDENTICAL  home-small  --json                         22342 bytes  sha256=bac7ce64145433eb
+IDENTICAL  home-small  --secondmate-home-summary       3316 bytes  sha256=e1b93e0bfcb55224
+BASE EMPTY home-28     --contribution-input       pre-fix produced 0 bytes (the argv defect); post-fix produced 883892 bytes
+IDENTICAL  home-28     --json                        983073 bytes  sha256=3ae56e986b2fce3b
+IDENTICAL  home-28     --secondmate-home-summary      23791 bytes  sha256=8a0c692faa32bbdc
+
+# Rendered human supervisor view, 150-task fleet, pre-fix vs post-fix:
+$ diff <(base/bin/fm-fleet-view.sh) <(fixed/bin/fm-fleet-view.sh)
+no difference (2019 rendered lines each)

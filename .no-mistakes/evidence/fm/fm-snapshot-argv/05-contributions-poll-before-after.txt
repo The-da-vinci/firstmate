@@ -1,0 +1,20 @@
+# End-user consequence: the supervisor's contribution poll on a 28-task fleet.
+# Ownership comes from the snapshot's --contribution-input pair, so an empty input means
+# the poll observes nothing and writes nothing - while still exiting 0.
+# A fake forge CLI serves every PR in the fixture, so the only variable is the snapshot.
+
+pre-fix  dee119b  $ fm-contributions.sh poll
+    exit status                      : 0
+    stderr                           : /tmp/fm-argv-lab/base/bin/fm-fleet-snapshot.sh: line 1991: /usr/bin/jq: Argument list too long 
+    durable contribution records written: 0 of 28 PRs
+post-fix 1dd0e33  $ fm-contributions.sh poll
+    exit status                      : 0
+    stderr                           : 
+    durable contribution records written: 28 of 28 PRs
+
+# A record the post-fix poll persisted (data/fleet-task-014/contributions.json):
+{"task":"fleet-task-014","url":"https://github.com/kunchenguid/firstmate/pull/5014","state":"open","head":"11111111","checks":[{"name":"ci","conclusion":"success"}]}
+
+# Same command at 150 tasks (post-fix): 144 of 150 observed in one poll, the rest deferred
+# by the documented FM_CONTRIBUTIONS_BUDGET, not lost.
+    durable contribution records written: 144 of 150 PRs

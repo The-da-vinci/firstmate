@@ -1,0 +1,14 @@
+# The authored regression is red before the fix and green after it.
+# Same test file (tests/fm-fleet-snapshot-view.test.sh at 1dd0e33) run against each bin/.
+
+$ (base tree) bash tests/fm-fleet-snapshot-view.test.sh
+ok - fleet view renders secondmate agent liveness
+/tmp/fm-argv-lab/base/bin/fm-fleet-snapshot.sh: line 1991: /usr/bin/jq: Argument list too long
+not ok - large contribution input was incomplete or malformed
+exit status: 1
+
+$ (fixed tree) bash tests/fm-fleet-snapshot-view.test.sh
+ok - fleet view renders the snapshot without secondmate peek guidance
+ok - fleet view renders secondmate agent liveness
+ok - contribution input carries a backlog and fleet beyond the argument limit
+exit status: 0

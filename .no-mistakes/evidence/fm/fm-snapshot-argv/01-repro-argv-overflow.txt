@@ -1,0 +1,18 @@
+# Reproduction of the reported defect (pre-fix, base dee119b)
+# Fixture: synthetic FM_HOME, 28 live ship tasks, 570-row backlog.
+# (The operator home that hit this has data/backlog.md at 119,639 bytes and 47 state metas;
+#  the parsed backlog JSON passed as one --argjson value exceeds the 128 KiB MAX_ARG_STRLEN cap.)
+
+$ FM_HOME=$HOME28 base/bin/fm-fleet-snapshot.sh --contribution-input > out.json
+/tmp/fm-argv-lab/base/bin/fm-fleet-snapshot.sh: line 1991: /usr/bin/jq: Argument list too long
+exit status: 0
+stdout bytes: 0
+
+# The failing exec returns 126; the unconditional 'exit 0' that follows turns it into
+# a clean exit with empty output - the silent degradation the intent names.
+
+# Same fixture, post-fix (1dd0e33):
+$ FM_HOME=$HOME28 fixed/bin/fm-fleet-snapshot.sh --contribution-input > out.json
+exit status: 0
+stdout bytes: 883892
+tasks=28  backlog.records=570  backlog.present=true
