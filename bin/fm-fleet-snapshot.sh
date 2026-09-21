@@ -1985,6 +1985,12 @@ contribution_tasks_json() {
   done | jq -s .
 }
 
+# The backlog and the per-task contribution rows both grow with the fleet, so
+# they reach jq as slurped files rather than as --argjson values, which the
+# kernel caps per argument.
+# An overflow fails the exec rather than the filter, so every step here is
+# status-checked to keep a failure from exiting 0 with empty output.
+# tests/fm-fleet-snapshot-view.test.sh pins both corpora past that cap.
 contribution_input_json() {
   contribution_tasks_json > "$CONTRIBUTION_TASKS_JSON_FILE" \
     || { echo "fm-fleet-snapshot: contribution task read failed" >&2; return 1; }
@@ -1993,6 +1999,7 @@ contribution_input_json() {
     || { echo "fm-fleet-snapshot: contribution input assembly failed" >&2; return 1; }
 }
 
+# Staged before the contribution-input branch because that path is file-backed too.
 JSON_TRANSPORT_DIR=$(mktemp -d "${TMPDIR:-/tmp}/fm-fleet-snapshot.XXXXXX") \
   || { echo "fm-fleet-snapshot: temporary transport directory creation failed" >&2; exit 1; }
 BACKLOG_JSON_FILE="$JSON_TRANSPORT_DIR/backlog.json"
